@@ -1,3 +1,6 @@
+html, body, #app, #app>div {
+  height: 100%
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +8,61 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+}
+#root{
+    width:100%;
+    height: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#canvas{
+    height: 100%;
+    position: relative;
+}
+.moveAble{
+    position: absolute;
+}
+svg{
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* width: 100px;  */
+    /* height: 100px;  */
+    display: block; 
+}
+.block{
+    width: 200px;
+    height: 100px;
+    position: relative;
+    border: 1px solid red;
+}
+.border{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: brown;
+}
+.border.left{
+    left: -7px;
+    top: calc(50% - 7px);
+}
+
+.border.right{
+    right: -7px;
+    top: calc(50% - 7px);
+}
+
+.border.up{
+    top: -7px;
+    left: calc(50% - 7px);
+}
+
+.border.down{
+    bottom: -7px;
+    left:  calc(50% - 7px);
 }
