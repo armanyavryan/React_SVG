@@ -1,36 +1,23 @@
 import React, { useState } from "react";
-import {getElementByClassNameAndPos, SVGHelper } from "./YPath";
+import { getElementByClassNameAndPos, SVGHelper } from "./YPath";
+import RectAngleComponent from './RectAngleComponent'
+import SVGComponent from "./SVGComponent"
 let currentSVG = null;
 let isMouseDown = false;
 let sourceDir = "";
 let grabbedBlock = false;
 let grabbedPos = { x: -1, y: -1 }
 
-
-const PathComponent = (data) => {
-    alert(data)
-    return (
-        <path d="M00L50,50" stroke="#000" strokeWidth={1}></path>
-    )
-}
-
-const RectAngleComponent = () => {
-    return (
-        <div className="block" key={Math.random()}>
-            <div onMouseDown={() => { sourceDir = "left"}} className="border left"></div>
-            <div onMouseDown={() => { sourceDir = "up"}} className="border up"></div>
-            <div onMouseDown={() => { sourceDir = "right"}} className="border right"></div>
-            <div onMouseDown={() => { sourceDir = "down"}} className="border down"></div>
-        </div>
-    );
-};
+let pathsMap = new Map();
 
 const ContainerComponent = () => {
-    let [rectsCount, setRectsCount] = useState([]);
-    let [pathsCount, setPathsCount] = useState([]);
+    let [rectElements, setRectElements] = useState([]);
+    // let [pathElements, setPathElements] = useState([]);
+    let [paths, setPaths] = useState([]);
+    // let [pathData, setPathData] = useState([]);
 
     const onAddBtnClick = (event) => {
-        setRectsCount(rectsCount.concat(<RectAngleComponent key={rectsCount.length} />));
+        setRectElements(rectElements.concat(<RectAngleComponent key={rectElements.length} />));
     };
 
 
@@ -70,6 +57,8 @@ const ContainerComponent = () => {
             // console.log(e)
 
             let dst = getElementByClassNameAndPos(e.clientX, e.clientY, "border");
+            console.log("dst")
+            console.log(dst)
             if (dst != null && currentSVG && dst != currentSVG.source.domBlockBorderElement) {
                 let dirs = ["left", "right", "down", "up"]
                 dirs.forEach(d => {
@@ -90,6 +79,12 @@ const ContainerComponent = () => {
             if (currentSVG) {
                 console.log("80")
                 currentSVG.moveTo(e.clientX - document.getElementById('canvas').clientLeft, e.clientY - document.getElementById('canvas').clientTop, dir);
+                let patElement = currentSVG.getPathElement();
+                let data = patElement.getAttribute('d')
+                paths = data;
+                setPaths(paths); //
+
+                // setPathElements(pathElements.concat(<PathComponent key={pathElements.length} pathElement={pe} />)); //
             }
 
         }
@@ -113,14 +108,24 @@ const ContainerComponent = () => {
             if (!currentSVG) {
                 let dirs = ["left", "right", "down", "up"]
                 let dir;
+
                 dirs.forEach(d => {
                     if (e.target.classList.contains(d)) {
                         dir = d;
                     }
                 }); 
-                currentSVG = new SVGHelper(document.getElementById('canvas'));
-                currentSVG.setSource(e.target, dir);
-                // setPathsCount(pathsCount.concat(<PathComponent key={pathsCount.length} data={"asdasdsadasd"} />));
+                // currentSVG = new SVGHelper(document.getElementById('canvas'));
+                // currentSVG.setSource(e.target, dir);
+                // let pe = currentSVG.getPathElement();
+                // let data = pe.getAttribute('d');
+                if (pathsMap.has()) {
+                    
+                }
+                paths.push(data);
+                setPaths(data); //
+
+                // setPathElements(pathElements.concat(<PathComponent key={pathElements.length} pathElement={pe} />)); //
+                // setpathElements(pathElements.concat(<PathComponent key={pathElements.length} data={"asdasdsadasd"} />));
             }
         }
 
@@ -137,10 +142,9 @@ const ContainerComponent = () => {
         <>
             <div id="canvas" onMouseMove={onMouseMove} onMouseDown={onMouseDown} onMouseUp={onMouseUp} >
                 <button onClick={onAddBtnClick}>Add input</button>
-                {rectsCount}
-                {/* <svg  width="100%" height="100%"> */}
-                {pathsCount }
-                {/* </svg> */}
+                {rectElements}
+                {/* <SVGComponent pathElements={pathElements} /> */}
+                <SVGComponent paths={ paths }/>
             </div>
         </>
     );

@@ -1889,43 +1889,51 @@ export class SVGHelper {
         let namespace = null
         namespace = null
         var svgpath = "http://www.w3.org/2000/svg";
-        let svg = document.createElementNS(svgpath, "svg")
+        // let svg = document.createElementNS(svgpath, "svg")
         // svg.setAttribute("xmlns", xmlns)
         // svg.setAttribute("viewBox", "0 0 " + container.clientWidth+ " " + container.clientHeight)
-        svg.setAttribute("width", container.clientWidth)
-        svg.setAttribute("height", container.clientHeight)
-        this.svg = svg;
+        // svg.setAttribute("width", container.clientWidth)
+        // svg.setAttribute("height", container.clientHeight)
+        // this.svg = svg;
         let pathElem = document.createElementNS(svgpath, "path")
         pathElem.setAttribute('d', 'M100,100 L100,100');
         pathElem.setAttribute("fill", "none");
         pathElem.setAttribute("stroke", "rgb(0,0,0)");
         pathElem.setAttribute("stroke-width", "2");
         this.pathElem = pathElem;
-        svg.appendChild(this.pathElem);
-        let circleElem = document.createElementNS(svgpath, "circle")
-        circleElem.setAttribute('fill', 'black');
-        circleElem.setAttribute('r', '5');
-        circleElem.setAttribute('cx', -9999);
-        circleElem.setAttribute('cy', -9999);
-        this.circleElem = circleElem;
-        svg.appendChild(this.circleElem);
-        let arrowElem = document.createElementNS(svgpath, "path")
-        arrowElem.setAttribute('fill', 'black');
-        this.arrowPath = " l -8,4 l 8,-12 l 8,12z"
-        arrowElem.setAttribute('d', 'M 0,0 ' + this.arrowPath);
-        this.arrowElem = arrowElem;
-        svg.appendChild(this.arrowElem);
-        container.appendChild(this.svg);
+        // svg.appendChild(this.pathElem);
+        // let circleElem = document.createElementNS(svgpath, "circle")
+        // circleElem.setAttribute('fill', 'black');
+        // circleElem.setAttribute('r', '5');
+        // circleElem.setAttribute('cx', -9999);
+        // circleElem.setAttribute('cy', -9999);
+        // this.circleElem = circleElem;
+        // svg.appendChild(this.circleElem);
+        // let arrowElem = document.createElementNS(svgpath, "path")
+        // arrowElem.setAttribute('fill', 'black');
+        // this.arrowPath = " l -8,4 l 8,-12 l 8,12z"
+        // arrowElem.setAttribute('d', 'M 0,0 ' + this.arrowPath);
+        // this.arrowElem = arrowElem;
+        // svg.appendChild(this.arrowElem);
+        // container.appendChild(this.svg);
         this.path = "";
+    
     }
+
+    getPathElement() {
+        let str = this.path.replace(/\s/g, '');
+
+        return this.pathElem;
+    }
+
     setSource(sourceElement, dir) {
         this.source.domBlockBorderElement = sourceElement
         this.source.dir = dir
         this.source.pos.x = sourceElement.getBoundingClientRect().x + sourceElement.getBoundingClientRect().width / 2;
         this.source.pos.y = sourceElement.getBoundingClientRect().y + sourceElement.getBoundingClientRect().height / 2;
         this.path = "M " + this.source.pos.x + ", " + this.source.pos.y + " ";
-        this.circleElem.setAttribute('cx', this.source.pos.x);
-        this.circleElem.setAttribute('cy', this.source.pos.y);
+        // this.circleElem.setAttribute('cx', this.source.pos.x);
+        // this.circleElem.setAttribute('cy', this.source.pos.y);
 
         // currentSVG.pathElem.
     }
@@ -2030,4 +2038,193 @@ export function getElementByClassNameAndPos(x, y, className) {
         }
     }
     return (null)
+}
+
+
+// export function moveFromUpToLeft(rectangle_1, rectangle_2, connection_path, reverse = false) {
+//     let src = currentSVG.source
+//     let dst = currentSVG.destination
+
+//     if (reverse) {
+//         dst = currentSVG.source
+//         src = currentSVG.destination
+
+//     }
+//     currentSVG.currentPos.x = x;
+//     currentSVG.currentPos.y = y;
+//     if (dst.domBlockBorderElement) {
+//         currentSVG.arrowElem.setAttribute('d', "M " + dst.pos.x + ", " + dst.pos.y + " " + currentSVG.arrowPath);
+//     } else {
+//         currentSVG.arrowElem.setAttribute('d', "M " + x + ", " + y + " " + currentSVG.arrowPath);
+//     }
+
+//     let mx = (x + src.pos.x) / 2
+//     let my = (y + src.pos.y) / 2
+//     let dx = (x - src.pos.x)
+//     let dy = (y - src.pos.y)
+//     currentSVG.path = "M" + src.pos.x + "," + src.pos.y;
+//     if (x <= src.domBlockBorderElement.parentElement.getBoundingClientRect().x - 2 * currentSVG.margin) {
+
+//         if (!dst.domBlockBorderElement) {
+//             currentSVG.path += "V " + (src.pos.y - currentSVG.margin) + " ";
+//             currentSVG.path += "H " + (src.domBlockBorderElement.parentElement.getBoundingClientRect().x + x) / 2 + " ";
+//             currentSVG.path += "V " + y + " ";
+//             currentSVG.path += "H " + x + " ";
+//             currentSVG.pathElem.setAttribute("stroke", "gray");
+//         }
+//         else {
+//             if (dst.domBlockBorderElement.parentElement.getBoundingClientRect().y + dst.domBlockBorderElement.parentElement.getBoundingClientRect().height / 2 >= src.pos.y) {
+//                 //       ____________________o
+//                 //      |    ________
+//                 //      |-->|________|
+//                 //      
+//                 let l = (src.pos.y - currentSVG.margin)
+//                 l = Math.min(l, dst.domBlockBorderElement.parentElement.getBoundingClientRect().y - currentSVG.margin)
+//                 currentSVG.path += "V " + l + " ";
+//                 currentSVG.path += "H " + (dst.pos.x - currentSVG.margin) + " ";
+//                 currentSVG.path += "V " + dst.pos.y + " ";
+//                 currentSVG.path += "H " + dst.pos.x + " ";
+//                 currentSVG.pathElem.setAttribute("stroke", "yellow");
+//             }
+
+
+//             else {
+//                 //  destination.X  <  source.X
+//                 //dest.b + 2m > s.y
+//                 if (dst.domBlockBorderElement.parentElement.getBoundingClientRect().y + dst.domBlockBorderElement.parentElement.getBoundingClientRect().height + 2 * currentSVG.margin > src.pos.y) {
+//                     //  .->
+//                     //  |       ____________
+//                     //  |______|            |
+//                     //
+//                     let l1 = src.domBlockBorderElement.parentElement.getBoundingClientRect().x;
+//                     let l2 = dst.domBlockBorderElement.parentElement.getBoundingClientRect().x + dst.domBlockBorderElement.parentElement.getBoundingClientRect().width;
+//                     let l = (l1 + l2) / 2
+//                     if (l > src.domBlockBorderElement.parentElement.getBoundingClientRect().x - currentSVG.margin) {
+//                         l = src.domBlockBorderElement.parentElement.getBoundingClientRect().x - currentSVG.margin;
+//                     }
+//                     let l3 = dst.domBlockBorderElement.parentElement.getBoundingClientRect().y + dst.domBlockBorderElement.parentElement.getBoundingClientRect().height + currentSVG.margin;
+//                     currentSVG.path += "V " + (src.pos.y - currentSVG.margin) + " ";
+//                     currentSVG.path += "H " + l + " ";
+//                     currentSVG.path += "V " + l3 + " ";
+//                     currentSVG.path += "H " + (dst.pos.x - currentSVG.margin) + " ";
+//                     currentSVG.path += "V " + dst.pos.y + " ";
+//                     currentSVG.path += "H " + dst.pos.x + " ";
+
+//                     currentSVG.pathElem.setAttribute("stroke", "red");
+//                 }
+//                 else if (dst.domBlockBorderElement.parentElement.getBoundingClientRect().y + dst.domBlockBorderElement.parentElement.getBoundingClientRect().height + 2 * currentSVG.margin <= src.pos.y) {
+//                     let l1 = src.domBlockBorderElement.parentElement.getBoundingClientRect().y;
+//                     let l2 = dst.domBlockBorderElement.parentElement.getBoundingClientRect().y + dst.domBlockBorderElement.parentElement.getBoundingClientRect().height;
+//                     let l = (l1 + l2) / 2
+//                     currentSVG.path += "V " + (l) + " ";
+//                     currentSVG.path += "H " + (dst.pos.x - currentSVG.margin) + " ";
+//                     currentSVG.path += "V " + dst.pos.y + " ";
+//                     currentSVG.path += "H " + dst.pos.x + " ";
+
+//                     currentSVG.pathElem.setAttribute("stroke", "cyan");
+//                 }
+//             }
+
+//         }
+//     }
+
+//     // if x > source.right + margin
+//     else if (x > src.domBlockBorderElement.parentElement.getBoundingClientRect().x
+//         + src.domBlockBorderElement.parentElement.getBoundingClientRect().width + 2 * currentSVG.margin) {
+
+//         if (!dst.domBlockBorderElement) {
+//             //              |
+//             //           ___|
+//             //          |
+//             //          |
+
+//             currentSVG.path += "V " + (src.pos.y - currentSVG.margin) + " ";
+//             currentSVG.path += "H " + (src.domBlockBorderElement.parentElement.getBoundingClientRect().x + src.domBlockBorderElement.parentElement.getBoundingClientRect().width + x) / 2 + " ";
+//             currentSVG.path += "V " + y + " ";
+//             currentSVG.path += "H " + x + " ";
+//             currentSVG.pathElem.setAttribute("stroke", "violet");
+//         }
+//         else {
+//             if (dst.pos.y < src.pos.y - currentSVG.margin) {
+//                 //                 .---------------->
+//                 //                 |
+//                 //                 |
+//                 //                 |
+//                 currentSVG.path += "V " + (dst.pos.y) + " ";
+//                 currentSVG.path += "H " + (dst.pos.x) + " ";
+//                 currentSVG.pathElem.setAttribute("stroke", "brown");
+//             } else {
+//                 //              |
+//                 //           ___|
+//                 //          |
+//                 //          |
+
+//                 currentSVG.path += "V " + (src.pos.y - currentSVG.margin) + " ";
+//                 currentSVG.path += "H " + (src.domBlockBorderElement.parentElement.getBoundingClientRect().x + src.domBlockBorderElement.parentElement.getBoundingClientRect().width + dst.pos.x) / 2 + " ";
+//                 currentSVG.path += "V " + dst.pos.y + " ";
+//                 currentSVG.path += "H " + dst.pos.x + " ";
+//                 currentSVG.pathElem.setAttribute("stroke", "violet");
+//             }
+//         }
+//     }
+
+//     // if x < +margin [source] + margin
+//     else {
+
+//         if (y < src.pos.y) {
+//             if (!dst.domBlockBorderElement) {
+//                 currentSVG.pathElem.setAttribute("stroke", "red");// red
+//                 currentSVG.path += "V " + (src.pos.y - 2 * currentSVG.margin) + " ";
+//                 currentSVG.path += "H " + (x) + " ";
+//                 currentSVG.path += "V " + y + " ";
+//             }
+//             else {
+//                 if (dst.pos.x < src.pos.x + currentSVG.margin) {
+//                     let ym = (dst.domBlockBorderElement.parentElement.getBoundingClientRect().y +
+//                         dst.domBlockBorderElement.parentElement.getBoundingClientRect().height +
+//                         src.domBlockBorderElement.parentElement.getBoundingClientRect().y) / 2;
+//                     currentSVG.pathElem.setAttribute("stroke", "yellow");
+//                     currentSVG.path += "V " + (ym) + " ";
+//                     currentSVG.path += "H " + (dst.pos.x - currentSVG.margin) + " ";
+//                     currentSVG.path += "V " + (dst.pos.y) + " ";
+//                     currentSVG.path += "H " + (dst.pos.x) + " ";
+//                 }
+//                 else {
+//                     currentSVG.pathElem.setAttribute("stroke", "black");
+//                     currentSVG.path += "V " + (dst.pos.y) + " ";
+//                     currentSVG.path += "H " + (dst.pos.x) + " ";
+//                 }
+
+//             }
+//         }
+
+//         // dest.y > source.b
+//         else if (y > src.domBlockBorderElement.parentElement.getBoundingClientRect().y + src.domBlockBorderElement.parentElement.getBoundingClientRect().height) {
+//             currentSVG.pathElem.setAttribute("stroke", "red");
+//             currentSVG.path += "V " + (src.pos.y - currentSVG.margin) + " ";
+//             if (x > src.domBlockBorderElement.parentElement.getBoundingClientRect().x + src.domBlockBorderElement.parentElement.getBoundingClientRect().width + 2 * currentSVG.margin) {
+//                 currentSVG.path += "H " + (src.domBlockBorderElement.parentElement.getBoundingClientRect().x + src.domBlockBorderElement.parentElement.getBoundingClientRect().width + currentSVG.margin) + " ";
+//             }
+//             else {
+//                 let l = src.domBlockBorderElement.parentElement.getBoundingClientRect().x - currentSVG.margin;
+//                 l = Math.min(l, dst.pos.x - currentSVG.margin)
+
+//                 currentSVG.path += "H " + l + " ";
+//             }
+//             currentSVG.path += "V " + dst.pos.y + " ";
+//             currentSVG.path += "H " + dst.pos.x + " ";
+//             currentSVG.pathElem.setAttribute("stroke", "red");
+//         }
+//         // currentSVG.path += "H " + x + " ";
+//     }
+//     currentSVG.pathElem.setAttribute("d", currentSVG.path)
+
+// }
+
+export function getSvgPathFromData(rectangle_1, rectangle_2, connection_path) {
+    if (connection_path.start_rect_connection_side == "left") {
+        if (connection_path.end_rect_connection_side == "up") {
+            
+        }
+    }
 }
